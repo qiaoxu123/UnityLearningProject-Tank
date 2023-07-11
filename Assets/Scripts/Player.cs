@@ -52,15 +52,28 @@ public class Player : MonoBehaviour
         float h = Input.GetAxisRaw("Horizontal");
         transform.Translate(Vector3.right * h * moveSpeed * Time.fixedDeltaTime, Space.World);
 
-        if (h < 0) sr.sprite = tankSprite[3];
-        else if (h > 0) sr.sprite = tankSprite[1];
+        if (h < 0) {
+            sr.sprite = tankSprite[3];
+            bullectEulerAngles = new Vector3(0,0,90);
+        }
+        
+        else if (h > 0) {
+            sr.sprite = tankSprite[1];
+            bullectEulerAngles = new Vector3(0,0,-90);
+        }
 
         if (h != 0) return;
 
         float v = Input.GetAxisRaw("Vertical");
         transform.Translate(Vector3.up * v * moveSpeed * Time.fixedDeltaTime, Space.World);
 
-        if (v < 0) sr.sprite = tankSprite[2];
-        else if (v > 0) sr.sprite = tankSprite[0];
+        if (v < 0) {
+            sr.sprite = tankSprite[2];
+            bullectEulerAngles = new Vector3(0,0,-180);
+        }
+        else if (v > 0) {
+            sr.sprite = tankSprite[0];
+            bullectEulerAngles = new Vector3(0,0,0);
+        }
     }
 }
