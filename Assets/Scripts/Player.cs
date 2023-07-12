@@ -8,12 +8,15 @@ public class Player : MonoBehaviour
     public int moveSpeed = 3;
     private Vector3 bullectEulerAngles;
     private float timeVal;
+    private float defendTimeVal = 3;        // 出生 3s 内无敌状态
+    private bool isDefended = true;
 
     // 引用
     private SpriteRenderer sr;
     public Sprite[] tankSprite;
     public GameObject bullectPrefab;
     public GameObject explosionPrefab;
+    public GameObject defendEffectPrefab;
 
     private void Awake()
     {
@@ -23,12 +26,24 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        // 开启无敌特效
+        defendEffectPrefab.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
+        // 是否处于无敌状态
+        if (isDefended) {
+            if (defendTimeVal > 0) {
+                defendTimeVal -= Time.deltaTime;
+            } else {
+                isDefended = false;
+                defendEffectPrefab.SetActive(false); // 关闭无敌特效
+            }
+        }
+
+        // 攻击 CD 
         if (timeVal >= 0.4f) Attack();
         else timeVal += Time.deltaTime;
     }
@@ -83,6 +98,9 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
+        // 处于无敌状态时免疫死亡
+        if (isDefended) return;
+
         // 产生爆炸特效
         Instantiate(explosionPrefab, transform.position, transform.rotation);
         // Die
