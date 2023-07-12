@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     // 属性值
     public int moveSpeed = 3;
     private Vector3 bullectEulerAngles;
+    private float timeVal;
 
     // 引用
     private SpriteRenderer sr;
@@ -27,7 +28,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Attack();
+        if (timeVal >= 0.4f) Attack();
+        else timeVal += Time.deltaTime;
     }
 
     // 适用于处理物理相关的逻辑，保证物理引擎在每个固定的时间步长内对物体的运动、碰撞和力的作用进行处理
@@ -43,6 +45,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Instantiate(bullectPrefab, transform.position, Quaternion.Euler(transform.eulerAngles + bullectEulerAngles)); 
+            timeVal = 0;
         }
     }
 
