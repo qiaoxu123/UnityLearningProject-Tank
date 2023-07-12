@@ -17,4 +17,23 @@ public class Bullect : MonoBehaviour
     {
         transform.Translate(transform.up * moveSpeed * Time.deltaTime, Space.World);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        switch (collision.tag)
+        {
+            case "Tank":
+                collision.SendMessage("Die");
+                break;
+            case "Heart":
+                break;
+            case "Enemy":
+                break;
+            case "Wall":
+                break;
+            case "Barrier":
+                break;
+            default:
+                break;
+        }
+    }
 }

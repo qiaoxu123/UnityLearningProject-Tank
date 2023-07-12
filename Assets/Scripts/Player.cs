@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     private SpriteRenderer sr;
     public Sprite[] tankSprite;
     public GameObject bullectPrefab;
+    public GameObject explosionPrefab;
 
     private void Awake()
     {
@@ -78,5 +79,13 @@ public class Player : MonoBehaviour
             sr.sprite = tankSprite[0];
             bullectEulerAngles = new Vector3(0,0,0);
         }
+    }
+
+    private void Die()
+    {
+        // 产生爆炸特效
+        Instantiate(explosionPrefab, transform.position, transform.rotation);
+        // Die
+        Destroy(gameObject);
     }
 }
