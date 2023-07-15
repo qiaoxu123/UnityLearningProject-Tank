@@ -7,13 +7,17 @@ public class Enemy : MonoBehaviour
     // 属性值
     public int moveSpeed = 3;
     private Vector3 bullectEulerAngles;
-    private float timeVal;
+    private int v, h;
 
     // 引用
     private SpriteRenderer sr;
     public Sprite[] tankSprite;
     public GameObject bullectPrefab;
     public GameObject explosionPrefab;
+
+    // 计时器
+    private float timeVal = 0;
+    private float timeValChangeDirection = 4;  // 一出生就有一个移动的效果，不用等待计时
 
     private void Awake()
     {
@@ -28,8 +32,8 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // 攻击 CD 
-        if (timeVal >= 0.4f) Attack();
+        // 攻击的时间间隔
+        if (timeVal >=  3) Attack();
         else timeVal += Time.deltaTime;
     }
 
@@ -43,17 +47,30 @@ public class Enemy : MonoBehaviour
 
     private void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Instantiate(bullectPrefab, transform.position, Quaternion.Euler(transform.eulerAngles + bullectEulerAngles)); 
-            timeVal = 0;
-        }
+        Instantiate(bullectPrefab, transform.position, Quaternion.Euler(transform.eulerAngles + bullectEulerAngles)); 
+        timeVal = 0;
     }
 
     private void Move()
     {
-        // 保证不会抖动
-        float h = Input.GetAxisRaw("Horizontal");
+        if (timeValChangeDirection >= 4) {
+            int num = Random.Range(0, 8);
+
+            if (num > 5) {
+                v = -1; h = 0;
+            } else if (num == 0) {
+                v = 1; h = 0;
+            } else if (num > 0 && num <= 2) {
+                h = -1; v = 0;
+            } else {
+                h = 1; v = 0;
+            }
+
+            timeValChangeDirection = 0;
+        } else {
+            timeValChangeDirection += Time.fixedDeltaTime;
+        }
+
         transform.Translate(Vector3.right * h * moveSpeed * Time.fixedDeltaTime, Space.World);
 
         if (h < 0) {
@@ -68,7 +85,6 @@ public class Enemy : MonoBehaviour
 
         if (h != 0) return;
 
-        float v = Input.GetAxisRaw("Vertical");
         transform.Translate(Vector3.up * v * moveSpeed * Time.fixedDeltaTime, Space.World);
 
         if (v < 0) {

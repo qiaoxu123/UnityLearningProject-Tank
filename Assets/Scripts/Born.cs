@@ -5,6 +5,11 @@ using UnityEngine;
 public class Born : MonoBehaviour
 {
     public GameObject playerPrefab;
+    public int enemyType;
+
+    public GameObject[] enemyPrefabList;
+
+    public bool createPlayer;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +25,10 @@ public class Born : MonoBehaviour
     }
 
     private void BornTank() {
-        Instantiate(playerPrefab, transform.position, Quaternion.identity);
+        if (createPlayer) {
+            Instantiate(playerPrefab, transform.position, Quaternion.identity);
+        } else {
+            Instantiate(enemyPrefabList[enemyType], transform.position, Quaternion.identity);
+        }
     }
 }

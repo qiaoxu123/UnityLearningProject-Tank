@@ -23,13 +23,20 @@ public class Bullect : MonoBehaviour
         switch (collision.tag)
         {
             case "Tank":
-                if (!isPlayerBullect) collision.SendMessage("Die");
+                if (!isPlayerBullect) {
+                    collision.SendMessage("Die");
+                    Destroy(gameObject);
+                }
                 break;
             case "Heart":
                 collision.SendMessage("Die");
                 Destroy(gameObject);
                 break;
             case "Enemy":
+                if (isPlayerBullect) {
+                    collision.SendMessage("Die");
+                    Destroy(gameObject);
+                }
                 break;
             case "Wall":
                 Destroy(collision.gameObject);
