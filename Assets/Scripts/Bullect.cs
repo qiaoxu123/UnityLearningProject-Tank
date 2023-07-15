@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bullect : MonoBehaviour
 {
     public float moveSpeed = 10;
+    public bool isPlayerBullect;  // 区分玩家子弹还是敌人子弹
 
     // Start is called before the first frame update
     void Start()
@@ -22,15 +23,20 @@ public class Bullect : MonoBehaviour
         switch (collision.tag)
         {
             case "Tank":
-                collision.SendMessage("Die");
+                if (!isPlayerBullect) collision.SendMessage("Die");
                 break;
             case "Heart":
+                collision.SendMessage("Die");
+                Destroy(gameObject);
                 break;
             case "Enemy":
                 break;
             case "Wall":
+                Destroy(collision.gameObject);
+                Destroy(gameObject);
                 break;
             case "Barrier":
+                Destroy(gameObject);
                 break;
             default:
                 break;
