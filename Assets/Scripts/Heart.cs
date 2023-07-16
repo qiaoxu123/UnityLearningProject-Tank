@@ -19,5 +19,7 @@ public class Heart : MonoBehaviour
     {
         sr.sprite = BrokenSprite;
         Instantiate(explosionPrefab, transform.position, transform.rotation);
+        PlayerManager.Instance.isDead = true;
+        PlayerManager.Instance.lifeValue = -1;
     }
 }
