@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
     // 属性值
     public int moveSpeed = 3;
     private Vector3 bullectEulerAngles;
-    private int v, h;
+    private int v = -1, h;
 
     // 引用
     private SpriteRenderer sr;
@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
 
     // 计时器
     private float timeVal = 0;
-    private float timeValChangeDirection = 4;  // 一出生就有一个移动的效果，不用等待计时
+    private float timeValChangeDirection = 0 ;  // 一出生就有一个移动的效果，不用等待计时
 
     private void Awake()
     {
@@ -99,9 +99,17 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
+        PlayerManager.Instance.playerScore += 1;
         // 产生爆炸特效
         Instantiate(explosionPrefab, transform.position, transform.rotation);
         // Die
         Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.tag == "Enemy") {
+            v *= -1; 
+            h *= -1;
+        }
     }
 }

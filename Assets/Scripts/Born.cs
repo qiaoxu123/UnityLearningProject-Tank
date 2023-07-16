@@ -28,6 +28,7 @@ public class Born : MonoBehaviour
         if (createPlayer) {
             Instantiate(playerPrefab, transform.position, Quaternion.identity);
         } else {
+            int enemyType = Random.Range(0,2);
             Instantiate(enemyPrefabList[enemyType], transform.position, Quaternion.identity);
         }
     }

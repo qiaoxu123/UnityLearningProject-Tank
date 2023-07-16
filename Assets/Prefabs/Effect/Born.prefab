@@ -120,3 +120,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 4055684564271804764, guid: 3de930ac304aa4579a8a5d025b5ab166, type: 3}
+  enemyType: 0
+  enemyPrefabList:
+  - {fileID: 7186012008619417951, guid: 1da807af4831744bdba3565f79ca6222, type: 3}
+  - {fileID: 2980491279428922552, guid: 095452a5f9a8a41819b1ecbe6b9d8e4f, type: 3}
+  createPlayer: 0

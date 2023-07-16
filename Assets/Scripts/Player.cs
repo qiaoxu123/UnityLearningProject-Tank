@@ -101,6 +101,8 @@ public class Player : MonoBehaviour
         // 处于无敌状态时免疫死亡
         if (isDefended) return;
 
+        PlayerManager.Instance.isDead = true;
+
         // 产生爆炸特效
         Instantiate(explosionPrefab, transform.position, transform.rotation);
         // Die
