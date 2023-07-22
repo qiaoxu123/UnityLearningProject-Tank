@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 2980491279428922549}
   - component: {fileID: 2980491279428922554}
   - component: {fileID: 2980491279428922555}
+  - component: {fileID: -5095472432448667364}
   m_Layer: 0
-  m_Name: RedEnemy
+  m_Name: Enemys_4
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300006, guid: 3348c3d1a93bce84fba2264f6a8458f4, type: 3}
+  m_Sprite: {fileID: 21300064, guid: 3348c3d1a93bce84fba2264f6a8458f4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -154,3 +155,24 @@ MonoBehaviour:
   - {fileID: 21300052, guid: 3348c3d1a93bce84fba2264f6a8458f4, type: 3}
   bullectPrefab: {fileID: 3366398774205862071, guid: b2ab46e808efa44bdad3b9899b7dc7e7, type: 3}
   explosionPrefab: {fileID: 4191346494930826756, guid: cebe99c64bce747e29c00d8403472301, type: 3}
+--- !u!95 &-5095472432448667364
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2980491279428922552}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7a090a00c9e80472db6343bdf1860514, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

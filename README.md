@@ -4,7 +4,7 @@
 ### Performance
 
 1. Tank 行进应该是动画效果而不是静态图片；(Player 修改完成， Enemy 还未修改)
-2. 地图占位判断使用二维数组 bool 来判定，取代之前的一位无序数组查找；
+2. 地图占位判断使用二维数组 bool 来判定，取代之前的一位无序数组查找；(Completed)
 3. 
 
 ### Functionality

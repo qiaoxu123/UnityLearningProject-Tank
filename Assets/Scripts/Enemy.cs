@@ -47,13 +47,13 @@ public class Enemy : MonoBehaviour
 
     private void Attack()
     {
-        Instantiate(bullectPrefab, transform.position, Quaternion.Euler(transform.eulerAngles + bullectEulerAngles)); 
+        Instantiate(bullectPrefab, transform.position, transform.rotation); 
         timeVal = 0;
     }
 
     private void Move()
     {
-        if (timeValChangeDirection >= 4) {
+        if (timeValChangeDirection >= 2) {
             int num = Random.Range(0, 8);
 
             if (num > 5) {
@@ -74,13 +74,13 @@ public class Enemy : MonoBehaviour
         transform.Translate(Vector3.right * h * moveSpeed * Time.fixedDeltaTime, Space.World);
 
         if (h < 0) {
-            sr.sprite = tankSprite[3];
             bullectEulerAngles = new Vector3(0,0,90);
+            gameObject.transform.rotation = Quaternion.Euler(bullectEulerAngles);
         }
         
         else if (h > 0) {
-            sr.sprite = tankSprite[1];
             bullectEulerAngles = new Vector3(0,0,-90);
+            gameObject.transform.rotation = Quaternion.Euler(bullectEulerAngles);
         }
 
         if (h != 0) return;
@@ -88,12 +88,12 @@ public class Enemy : MonoBehaviour
         transform.Translate(Vector3.up * v * moveSpeed * Time.fixedDeltaTime, Space.World);
 
         if (v < 0) {
-            sr.sprite = tankSprite[2];
             bullectEulerAngles = new Vector3(0,0,-180);
+            gameObject.transform.rotation = Quaternion.Euler(bullectEulerAngles);
         }
         else if (v > 0) {
-            sr.sprite = tankSprite[0];
             bullectEulerAngles = new Vector3(0,0,0);
+            gameObject.transform.rotation = Quaternion.Euler(bullectEulerAngles);
         }
     }
 
