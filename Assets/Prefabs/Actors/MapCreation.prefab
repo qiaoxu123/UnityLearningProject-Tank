@@ -52,5 +52,5 @@ MonoBehaviour:
   - {fileID: 8510093778656948458, guid: e26e536fe9d834ca5aa9d32a86bf4603, type: 3}
   - {fileID: 3664222548271980733, guid: 9ef744cd27cfa41f7a1fef0d9c980f72, type: 3}
   - {fileID: 4570222962886912115, guid: 61f5a9295f03e46f6b96f4ca55ec03c1, type: 3}
-  gameMapHeight: 10
-  gameMapWidth: 20
+  gameMapHeight: 17
+  gameMapWidth: 27

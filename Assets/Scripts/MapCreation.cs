@@ -7,7 +7,7 @@ public class MapCreation : MonoBehaviour
     // 初始化地图所需物体的模板
     // 0.Heart 1.Born 2.Wall 3.Barrier 4.Grass 5.Water 6.AirBarrier
     public GameObject[] itemTypes;
-    public int gameMapHeight;   
+    public int gameMapHeight;
     public int gameMapWidth;
 
     // 局部变量
@@ -24,42 +24,44 @@ public class MapCreation : MonoBehaviour
     // 实例化物体 
     private void InitMap() {
         // 初始化地图
-        gameMap = new GameObject[gameMapWidth, gameMapHeight];  // 默认初始化值均为 0
-        offsetX = gameMapWidth / 2;     // 11 [-11, 10]
-        offsetY = gameMapHeight / 2;    // 6 [-6, 5]
-
-        // 实例化老家
-        CreateItem(itemTypes[0], new Vector3(0, -5, 0), Quaternion.identity);
-        CreateItem(itemTypes[2], new Vector3(-1, -5, 0), Quaternion.identity);
-        CreateItem(itemTypes[2], new Vector3(1, -5, 0), Quaternion.identity);
-        for (float i = -1; i < 2; ++ i) { 
-            CreateItem(itemTypes[2], new Vector3(i, -4, 0), Quaternion.identity);
-        }
+        gameMap = new GameObject[gameMapWidth + 1, gameMapHeight + 1];  // 默认初始化值均为 0
+        offsetX = gameMapWidth / 2 + 1;     // 27 / 2 = 13
+        offsetY = gameMapHeight / 2 + 1;    // 17 / 2 = 8
 
         // 实例化外围,限制地图大小
-        for (float i = -11; i < 11; ++ i) {
-            CreateItem(itemTypes[6], new Vector3(i, -6, 0), Quaternion.identity);
-            CreateItem(itemTypes[6], new Vector3(i, 5, 0), Quaternion.identity);
+        for (float i = -13.5f; i <= 13.5f; ++ i) {
+            CreateItem(itemTypes[6], new Vector3(i, -8.5f, 0), Quaternion.identity);
+            CreateItem(itemTypes[6], new Vector3(i, 8.5f, 0), Quaternion.identity);
         }
-        for (float i = -6; i < 6; ++ i) {
-            CreateItem(itemTypes[6], new Vector3(-11, i, 0), Quaternion.identity);
-            CreateItem(itemTypes[6], new Vector3(10, i, 0), Quaternion.identity);
+        for (float i = -8.5f; i <= 8.5f; ++ i) {
+            CreateItem(itemTypes[6], new Vector3(-13.5f, i, 0), Quaternion.identity);
+            CreateItem(itemTypes[6], new Vector3(13.5f, i, 0), Quaternion.identity);
+        }
+
+        // 实例化老家
+        CreateItem(itemTypes[0], new Vector3(0.5f, -7.5f, 0), Quaternion.identity);
+        CreateItem(itemTypes[2], new Vector3(-0.5f, -7.5f, 0), Quaternion.identity);
+        CreateItem(itemTypes[2], new Vector3(1.5f, -7.5f, 0), Quaternion.identity);
+        for (float i = -0.5f; i < 2.5f; ++ i) { 
+            CreateItem(itemTypes[2], new Vector3(i, -6.5f, 0), Quaternion.identity);
         }
 
         // 产生敌人
-        GameObject enemy0 = Instantiate(itemTypes[1], new Vector3(-10, 4, 0), Quaternion.identity);
-        GameObject enemy1 = Instantiate(itemTypes[1], new Vector3(0, 4, 0), Quaternion.identity);
-        GameObject enemy2 = Instantiate(itemTypes[1], new Vector3(9, 4, 0), Quaternion.identity);
+        CreateItem(itemTypes[1], new Vector3(-12.5f, 7.5f, 0), Quaternion.identity);
+        CreateItem(itemTypes[1], new Vector3(0.5f, 7.5f, 0), Quaternion.identity);
+        CreateItem(itemTypes[1], new Vector3(12.5f, 7.5f, 0), Quaternion.identity);
 
         // 初始化玩家
-        gameMap[-2 + offsetX, -5 + offsetY] = Instantiate(itemTypes[1], new Vector3(-2, -5, 0), Quaternion.identity);
-        gameMap[-2 + offsetX, -5 + offsetY].GetComponent<Born>().createPlayer = true;
+        int playerPosX = Mathf.FloorToInt(-1.5f) + offsetX;
+        int playerPosY = Mathf.FloorToInt(-7.5f) + offsetY;
+        gameMap[playerPosX, playerPosY] = Instantiate(itemTypes[1], new Vector3(-1.5f, -7.5f, 0), Quaternion.identity);
+        gameMap[playerPosX, playerPosY].GetComponent<Born>().createPlayer = true;
 
         //实例化地图
-        for (int i = 0; i < 60; ++ i) {
+        for (int i = 0; i < 80; ++ i) {
             CreateItem(itemTypes[2], CreateRandomPosition(), Quaternion.identity);
         }
-        for (int i = 0; i < 20; ++ i) {   
+        for (int i = 0; i < 30; ++ i) {   
             CreateItem(itemTypes[3], CreateRandomPosition(), Quaternion.identity);
             CreateItem(itemTypes[4], CreateRandomPosition(), Quaternion.identity);
             CreateItem(itemTypes[5], CreateRandomPosition(), Quaternion.identity);
@@ -71,8 +73,8 @@ public class MapCreation : MonoBehaviour
     private void CreateItem(GameObject createGameObject, Vector3 createPos, Quaternion createRotation) {
         if (HasThePosition(createPos)) return;
 
-        int adjustedX = (int)createPos.x + offsetX;
-        int adjustedY = (int)createPos.y + offsetY;
+        int adjustedX = Mathf.FloorToInt(createPos.x) + offsetX;
+        int adjustedY = Mathf.FloorToInt(createPos.y) + offsetY;
 
         gameMap[adjustedX, adjustedY] = Instantiate(createGameObject, createPos, createRotation);
         gameMap[adjustedX, adjustedY].transform.SetParent(gameObject.transform);
@@ -81,29 +83,20 @@ public class MapCreation : MonoBehaviour
     // 产生随机位置的方法
     private Vector3 CreateRandomPosition() {
         // 限定地图边界，不让其在这里生成物体
-        // 限制不在 enemyBorn 地方生成物体
-        Vector3 enemyPos0 = new Vector3(-10, 4, 0);
-        Vector3 enemyPos1 = new Vector3(0, 4, 0);
-        Vector3 enemyPos2 = new Vector3(9, 4, 0);
         while (true) {
-            Vector3 createPosition = new Vector3(Random.Range(-10, 10), Random.Range(-5, 5), 0); 
-            if (!HasThePosition(createPosition) && 
-                createPosition != enemyPos0 && 
-                createPosition != enemyPos1 && 
-                createPosition != enemyPos2) {
-                return createPosition;
+            float posX = Random.Range(-13, 13) + 0.5f;   // [-12.5, 12.5]
+            float posY = Random.Range(-8, 8) + 0.5f;   // [-7.5, 7.5]
+            Vector3 createPos = new Vector3(posX, posY, 0);
+            if (!HasThePosition(createPos)) {
+                return createPos;
             }
         }
     }
 
     // 判定该位置是否已占用，如未占用则返回 Null
     private bool HasThePosition(Vector3 createPos) {
-        int adjustedX = (int)createPos.x + offsetX;
-        int adjustedY = (int)createPos.y + offsetY;
-        Debug.Log("adjustedX is" + adjustedX);
-        Debug.Log("adjustedY is" + adjustedY);
-        Debug.Log("length" + gameMap.GetLength(0));
-        Debug.Log("length" + gameMap.GetLength(1));
+        int adjustedX = Mathf.FloorToInt(createPos.x) + offsetX;
+        int adjustedY = Mathf.FloorToInt(createPos.y) + offsetY;
 
         return gameMap[adjustedX, adjustedY] == null ? false : true;
     }
@@ -115,13 +108,13 @@ public class MapCreation : MonoBehaviour
         switch (num)
         {
             case 0: 
-                EnemyPos = new Vector3(-10, 4, 0);
+                EnemyPos = new Vector3(-12.5f, 6.5f, 0);
                 break;
             case 1: 
-                EnemyPos = new Vector3(0, 4, 0);
+                EnemyPos = new Vector3(0, 6.5f, 0);
                 break;
             case 2: 
-                EnemyPos = new Vector3(9, 4, 0);
+                EnemyPos = new Vector3(11.5f, 6.5f, 0);
                 break;
         }
         GameObject enemyBorn = Instantiate(itemTypes[1], EnemyPos, Quaternion.identity);

@@ -5,10 +5,7 @@ using UnityEngine;
 public class Born : MonoBehaviour
 {
     public GameObject playerPrefab;
-    public int enemyType;
-
-    public GameObject targetEnemyPrefab;
-    // public GameObject[] enemyPrefabList;
+    public GameObject[] enemyPrefabList;
 
     public bool createPlayer;
 
@@ -29,9 +26,8 @@ public class Born : MonoBehaviour
         if (createPlayer) {
             Instantiate(playerPrefab, transform.position, Quaternion.identity);
         } else {
-            // int enemyType = Random.Range(0,2);
-            // Instantiate(enemyPrefabList[enemyType], transform.position, Quaternion.identity);
-            Instantiate(targetEnemyPrefab, transform.position, Quaternion.identity);
+            int enemyType = Random.Range(0,2);
+            Instantiate(enemyPrefabList[enemyType], transform.position, Quaternion.identity);
         }
     }
 }
