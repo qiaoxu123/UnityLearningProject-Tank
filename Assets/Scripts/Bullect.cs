@@ -43,6 +43,7 @@ public class Bullect : MonoBehaviour
                 Destroy(gameObject);
                 break;
             case "Barrier":
+                if (isPlayerBullect) collision.SendMessage("PlayAudio");
                 Destroy(gameObject);
                 break;
             default:

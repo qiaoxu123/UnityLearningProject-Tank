@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -44,9 +45,10 @@ public class PlayerManager : MonoBehaviour
     }
 
     private void Recover() {
-        if (lifeValue < 0) {
+        if (lifeValue <= 0) {
             // 游戏失败，返回主界面
             isDefeatUI.SetActive(true);
+            Invoke("ReturnToTheMainMenu", 2);
             return;
         } else {
             lifeValue --;
@@ -54,5 +56,9 @@ public class PlayerManager : MonoBehaviour
             go.GetComponent<Born>().createPlayer = true;
             isDead = false;
         }
+    }
+
+    private void ReturnToTheMainMenu() {
+        SceneManager.LoadScene(0);
     }
 }

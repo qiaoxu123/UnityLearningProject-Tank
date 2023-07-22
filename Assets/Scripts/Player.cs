@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     public GameObject bullectPrefab;
     public GameObject explosionPrefab;
     public GameObject defendEffectPrefab;
+    public AudioSource moveAudio;
+    public AudioClip[] tankAudio;
 
     private void Awake()
     {
@@ -60,7 +62,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Instantiate(bullectPrefab, transform.position, Quaternion.Euler(transform.eulerAngles + bullectEulerAngles)); 
+            Instantiate(bullectPrefab, transform.position, transform.rotation); 
             timeVal = 0;
         }
     }
@@ -72,13 +74,15 @@ public class Player : MonoBehaviour
         transform.Translate(Vector3.right * h * moveSpeed * Time.fixedDeltaTime, Space.World);
 
         if (h < 0) {
-            sr.sprite = tankSprite[3];
+            // sr.sprite = tankSprite[3];
             bullectEulerAngles = new Vector3(0,0,90);
+            gameObject.transform.rotation = Quaternion.Euler(bullectEulerAngles);
         }
         
         else if (h > 0) {
-            sr.sprite = tankSprite[1];
+            // sr.sprite = tankSprite[1];
             bullectEulerAngles = new Vector3(0,0,-90);
+            gameObject.transform.rotation = Quaternion.Euler(bullectEulerAngles);
         }
 
         if (h != 0) return;
@@ -87,12 +91,27 @@ public class Player : MonoBehaviour
         transform.Translate(Vector3.up * v * moveSpeed * Time.fixedDeltaTime, Space.World);
 
         if (v < 0) {
-            sr.sprite = tankSprite[2];
+            // sr.sprite = tankSprite[2];
             bullectEulerAngles = new Vector3(0,0,-180);
+            gameObject.transform.rotation = Quaternion.Euler(bullectEulerAngles);
         }
         else if (v > 0) {
-            sr.sprite = tankSprite[0];
+            // sr.sprite = tankSprite[0];
             bullectEulerAngles = new Vector3(0,0,0);
+            gameObject.transform.rotation = Quaternion.Euler(bullectEulerAngles);
+        }
+
+        if (Mathf.Abs(v) > 0.05f | Mathf.Abs(h) > 0.05f) {
+            moveAudio.clip = tankAudio[1];
+            if (!moveAudio.isPlaying) {
+                moveAudio.Play();
+            }
+        } 
+        else {
+            moveAudio.clip = tankAudio[0];
+            // if (!moveAudio.isPlaying) {
+            //     moveAudio.Play();
+            // }
         }
     }
 
