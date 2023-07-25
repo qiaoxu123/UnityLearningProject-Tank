@@ -22,39 +22,54 @@ public class MazePlayer : MonoBehaviour
     // 注意修改 Time.deltaTime 为 Time.fixedDeltaTime
     private void FixedUpdate()
     {
-        Move();
+  
     }
 
-    private void Move()
-    {
-        // 保证不会抖动
-        float h = Input.GetAxisRaw("Horizontal");
-        transform.Translate(Vector3.right * h * moveSpeed * Time.fixedDeltaTime, Space.World);
+    // private void Move(float h, float v)
+    // {
+    //     // 保证不会抖动
+    //     transform.Translate(Vector3.right * h * moveSpeed * Time.fixedDeltaTime, Space.World);
 
-        Vector3 bullectEulerAngles;
+    //     Vector3 bullectEulerAngles;
 
-        if (h < 0) {
-            bullectEulerAngles = new Vector3(0,0,90);
-            gameObject.transform.rotation = Quaternion.Euler(bullectEulerAngles);
-        }
+    //     if (h < 0) {
+    //         bullectEulerAngles = new Vector3(0,0,90);
+    //         gameObject.transform.rotation = Quaternion.Euler(bullectEulerAngles);
+    //     }
         
-        else if (h > 0) {
-            bullectEulerAngles = new Vector3(0,0,-90);
-            gameObject.transform.rotation = Quaternion.Euler(bullectEulerAngles);
-        }
+    //     else if (h > 0) {
+    //         bullectEulerAngles = new Vector3(0,0,-90);
+    //         gameObject.transform.rotation = Quaternion.Euler(bullectEulerAngles);
+    //     }
 
-        if (h != 0) return;
+    //     if (h != 0) return;
 
-        float v = Input.GetAxisRaw("Vertical");
-        transform.Translate(Vector3.up * v * moveSpeed * Time.fixedDeltaTime, Space.World);
+    //     transform.Translate(Vector3.up * v * moveSpeed * Time.fixedDeltaTime, Space.World);
 
-        if (v < 0) {
-            bullectEulerAngles = new Vector3(0,0,-180);
-            gameObject.transform.rotation = Quaternion.Euler(bullectEulerAngles);
-        }
-        else if (v > 0) {
-            bullectEulerAngles = new Vector3(0,0,0);
-            gameObject.transform.rotation = Quaternion.Euler(bullectEulerAngles);
+    //     if (v < 0) {
+    //         bullectEulerAngles = new Vector3(0,0,-180);
+    //         gameObject.transform.rotation = Quaternion.Euler(bullectEulerAngles);
+    //     }
+    //     else if (v > 0) {
+    //         bullectEulerAngles = new Vector3(0,0,0);
+    //         gameObject.transform.rotation = Quaternion.Euler(bullectEulerAngles);
+    //     }
+    // }
+
+    public System.Collections.IEnumerator MoveToTarget(Vector3 targetPosition)
+    {
+        while (transform.position != targetPosition)
+        {
+            // 计算当前位置指向目标位置的方向向量
+            Vector3 direction = (targetPosition - transform.position).normalized;
+
+            // 计算每一帧移动的距离
+            float distanceThisFrame = moveSpeed * Time.deltaTime;
+
+            // 根据距离和方向向量更新车辆的位置
+            transform.position += direction * distanceThisFrame;
+
+            yield return null; // 等待下一帧
         }
     }
 }

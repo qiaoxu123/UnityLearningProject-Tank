@@ -32,7 +32,12 @@ public class FindShortestPath : MonoBehaviour
     private GameObject[,] basicMap;
     private int offsetX;
     private int offsetY;
-
+    public float rotationSpeed = 5f;
+    private List<Vector3> waypoints = new List<Vector3>();
+    private int currentWaypointIndex = 0;
+    public Transform waypointsContainer;
+    public float moveSpeed = 1f;
+    
     void Awake() {
         basicMap = new GameObject[mazeMapWidth + 1, mazeMapHeight + 1];
         InitBasicMap();
@@ -66,6 +71,9 @@ public class FindShortestPath : MonoBehaviour
 
                 GameObject pathNode = Instantiate(pathPrefab, new Vector3(posX, posY, 0), Quaternion.identity);
                 pathNode.transform.SetParent(gameObject.transform);
+
+                // 把得到的最短路径转变为 Transform 格式并添加到 waypoints 列表中
+                waypoints.Add(pathNode.transform.position);
             }
         } else {
             Debug.Log("No path found!");
@@ -75,7 +83,35 @@ public class FindShortestPath : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // 检查是否还有未到达的轨迹点
+        if (waypoints != null && currentWaypointIndex < waypoints.Count)
+        {
+            // 判断是否到达当前轨迹点，如果到达则前往下一个点
+            Debug.Log("Current index is " + currentWaypointIndex + " , Waypoints' size is " + waypoints[currentWaypointIndex]);
+            if (Vector3.Distance(playerPrefab.transform.position, waypoints[currentWaypointIndex]) < 0.1f)
+            {
+                currentWaypointIndex++;
+            }
+            else
+            {
+                // 尚未到达当前轨迹点，调用 Move() 函数前往该点
+                MoveToWaypoint(waypoints[currentWaypointIndex]);
+            }
+        }
+    }
+
+    private void MoveToWaypoint(Vector3 targetPosition)
+    {
+        while (Vector3.Distance(playerPrefab.transform.position, targetPosition) > 0.1f)
+        {
+            // 根据速度和时间步长计算每一帧应该移动的距离
+            float step = moveSpeed * Time.fixedDeltaTime;
+
+            // 使用插值函数逐渐移动车辆到目标位置
+            playerPrefab.transform.position = Vector3.Lerp(playerPrefab.transform.position, targetPosition, step);
+        }
+        // 到达目标点后，准备前往下一个点
+        currentWaypointIndex++;
     }
 
     // 初始化地图，将已有地图中保存的墙体对象都更新到新的 basicMap 中
@@ -167,5 +203,36 @@ public class FindShortestPath : MonoBehaviour
         }
 
         return neighbors;
+    }
+
+    private void Move(float h, float v)
+    {
+        // 保证不会抖动
+        playerPrefab.transform.Translate(Vector3.right * h * moveSpeed * Time.fixedDeltaTime, Space.World);
+
+        Vector3 bullectEulerAngles;
+
+        if (h < 0) {
+            bullectEulerAngles = new Vector3(0,0,90);
+            playerPrefab.transform.rotation = Quaternion.Euler(bullectEulerAngles);
+        }
+        
+        else if (h > 0) {
+            bullectEulerAngles = new Vector3(0,0,-90);
+            playerPrefab.transform.rotation = Quaternion.Euler(bullectEulerAngles);
+        }
+
+        if (h != 0) return;
+
+        playerPrefab.transform.Translate(Vector3.up * v * moveSpeed * Time.fixedDeltaTime, Space.World);
+
+        if (v < 0) {
+            bullectEulerAngles = new Vector3(0,0,-180);
+            playerPrefab.transform.rotation = Quaternion.Euler(bullectEulerAngles);
+        }
+        else if (v > 0) {
+            bullectEulerAngles = new Vector3(0,0,0);
+            playerPrefab.transform.rotation = Quaternion.Euler(bullectEulerAngles);
+        }
     }
 }
