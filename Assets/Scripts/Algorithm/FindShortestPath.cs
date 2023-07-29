@@ -84,34 +84,42 @@ public class FindShortestPath : MonoBehaviour
     void Update()
     {
         // 检查是否还有未到达的轨迹点
-        if (waypoints != null && currentWaypointIndex < waypoints.Count)
+        if (waypoints != null && currentWaypointIndex < waypoints.Count && Input.GetKeyDown(KeyCode.Space))
         {
             // 判断是否到达当前轨迹点，如果到达则前往下一个点
-            Debug.Log("Current index is " + currentWaypointIndex + " , Waypoints' size is " + waypoints[currentWaypointIndex]);
+            Debug.Log("Current index is " + currentWaypointIndex + " , Current position is " + waypoints[currentWaypointIndex]);
             if (Vector3.Distance(playerPrefab.transform.position, waypoints[currentWaypointIndex]) < 0.1f)
             {
                 currentWaypointIndex++;
             }
             else
             {
-                // 尚未到达当前轨迹点，调用 Move() 函数前往该点
-                MoveToWaypoint(waypoints[currentWaypointIndex]);
+                Vector3 currentDirectionAngle = playerPrefab.transform.rotation.eulerAngles;
+                Vector3 currentPositon = playerPrefab.transform.position;
+                Vector3 targetPosition = waypoints[currentWaypointIndex];
+                Vector3 targetDirection = targetPosition - currentPositon;
+                targetDirection.z = 0;
+                float targetDirectionAngle = Vector3.SignedAngle(Vector3.up, targetDirection, Vector3.forward);
+
+                if (Mathf.Abs(currentDirectionAngle[2] - targetDirectionAngle) < 0.1f) {
+                    // 尚未到达当前轨迹点，调用 Move() 函数前往该点
+                    MoveToWaypoint(currentPositon, targetPosition);
+                } else {
+                    playerPrefab.transform.rotation = Quaternion.Euler(0f, 0f, targetDirectionAngle);
+                }
+
             }
         }
     }
 
-    private void MoveToWaypoint(Vector3 targetPosition)
+    private void MoveToWaypoint(Vector3 currentPosition, Vector3 targetPosition)
     {
-        while (Vector3.Distance(playerPrefab.transform.position, targetPosition) > 0.1f)
+        if (Vector3.Distance(currentPosition, targetPosition) > 0.1f)
         {
-            // 根据速度和时间步长计算每一帧应该移动的距离
-            float step = moveSpeed * Time.fixedDeltaTime;
-
             // 使用插值函数逐渐移动车辆到目标位置
-            playerPrefab.transform.position = Vector3.Lerp(playerPrefab.transform.position, targetPosition, step);
+            playerPrefab.transform.position = targetPosition;
+            currentWaypointIndex++;
         }
-        // 到达目标点后，准备前往下一个点
-        currentWaypointIndex++;
     }
 
     // 初始化地图，将已有地图中保存的墙体对象都更新到新的 basicMap 中

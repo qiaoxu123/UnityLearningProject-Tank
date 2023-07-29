@@ -173,6 +173,9 @@ MonoBehaviour:
   pathPrefab: {fileID: 3664222548271980733, guid: 9ef744cd27cfa41f7a1fef0d9c980f72, type: 3}
   mazeMapHeight: 17
   mazeMapWidth: 27
+  rotationSpeed: 0.5
+  waypointsContainer: {fileID: 0}
+  moveSpeed: 0.1
 --- !u!1 &1628837775
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,6 +274,30 @@ PrefabInstance:
     - target: {fileID: 4688694740762180582, guid: 72ac9acc0499f48babd85eb39c744f60, type: 3}
       propertyPath: m_LocalPosition.y
       value: -7.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7076355362604153739, guid: 72ac9acc0499f48babd85eb39c744f60, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7076355362604153739, guid: 72ac9acc0499f48babd85eb39c744f60, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7076355362604153739, guid: 72ac9acc0499f48babd85eb39c744f60, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7076355362604153739, guid: 72ac9acc0499f48babd85eb39c744f60, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7076355362604153739, guid: 72ac9acc0499f48babd85eb39c744f60, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7076355362604153739, guid: 72ac9acc0499f48babd85eb39c744f60, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8132413406855013109, guid: 72ac9acc0499f48babd85eb39c744f60, type: 3}
       propertyPath: m_RootOrder
